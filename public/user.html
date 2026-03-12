@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard | The Royal Fitness Gym</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <div class="logo-icon">👑</div>
+            <span>ROYAL <span class="gold">FITNESS</span></span>
+        </div>
+        <div class="nav-links">
+            <button class="tab-nav active" data-tab="overview" id="navOverview">🏠 <span>Overview</span></button>
+            <button class="tab-nav" data-tab="attendance" id="navAttendance">📅 <span>Attendance</span></button>
+            <button class="tab-nav" data-tab="progress" id="navProgress">📈 <span>Progress</span></button>
+            <button onclick="logout()" style="color: var(--danger);">🚪 <span>Logout</span></button>
+        </div>
+    </nav>
+
+    <div class="dashboard">
+        <div class="dashboard-content">
+
+            <!-- Dashboard Header -->
+            <div class="dashboard-header">
+                <h1>Welcome, <span class="text-gold" id="userName">Member</span> 👋</h1>
+                <p>Track your fitness journey with The Royal Fitness Gym</p>
+            </div>
+
+            <!-- ==================== OVERVIEW TAB ==================== -->
+            <div class="tab-content active" id="tab-overview">
+
+                <!-- Membership Card -->
+                <div class="membership-card" id="membershipCard">
+                    <div class="plan-name" id="planName">Loading...</div>
+                    <h3 id="membershipTitle">Your Membership</h3>
+                    <div class="membership-info">
+                        <div class="info-item">
+                            <div class="info-label">Start Date</div>
+                            <div class="info-value" id="msStart">—</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">End Date</div>
+                            <div class="info-value" id="msEnd">—</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Days Remaining</div>
+                            <div class="info-value" id="msDays">—</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Payment Status</div>
+                            <div class="info-value" id="msPayment">—</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(16,185,129,0.15); color: var(--success);">📅
+                        </div>
+                        <div class="stat-value" id="totalAttendance">0</div>
+                        <div class="stat-label">Total Attendance</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(59,130,246,0.15); color: var(--info);">📆</div>
+                        <div class="stat-value" id="monthAttendance">0</div>
+                        <div class="stat-label">This Month</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(245,158,11,0.15); color: var(--accent);">🏋️
+                        </div>
+                        <div class="stat-value" id="memberSince">—</div>
+                        <div class="stat-label">Member Since</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ==================== ATTENDANCE TAB ==================== -->
+            <div class="tab-content" id="tab-attendance">
+
+                <!-- Mark Attendance -->
+                <div class="glass-card" style="margin-bottom: 24px;">
+                    <div class="attendance-btn-container">
+                        <h3 style="margin-bottom: 8px;">Mark Today's Attendance</h3>
+                        <p class="text-muted" style="margin-bottom: 24px;" id="todayDate"></p>
+                        <button class="attendance-btn" id="markAttendanceBtn" onclick="markAttendance()">
+                            <span class="check-icon">✓</span>
+                            <span>CHECK IN</span>
+                        </button>
+                        <p class="text-muted mt-2" id="attendanceStatus" style="font-size: 0.85rem;"></p>
+                    </div>
+                </div>
+
+                <!-- Attendance Calendar -->
+                <div class="glass-card">
+                    <h3 style="margin-bottom: 8px;">📅 Attendance Calendar</h3>
+                    <p class="text-muted mb-2" id="calendarMonth" style="font-size: 0.9rem;"></p>
+                    <div class="flex gap-2 mb-3">
+                        <button class="btn btn-secondary btn-sm" onclick="changeMonth(-1)">◀ Prev</button>
+                        <button class="btn btn-secondary btn-sm" onclick="changeMonth(1)">Next ▶</button>
+                    </div>
+                    <div class="attendance-calendar" id="attendanceCalendar"></div>
+                    <div class="flex gap-2 mt-2"
+                        style="font-size: 0.75rem; color: var(--text-muted); justify-content: center;">
+                        <span>🟢 Present</span>
+                        <span>🟡 Today</span>
+                    </div>
+                </div>
+
+                <!-- Attendance History -->
+                <div class="table-container mt-3">
+                    <div class="table-header">
+                        <h3>📋 Recent Attendance</h3>
+                    </div>
+                    <div class="table-responsive" style="overflow-x: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Day</th>
+                                    <th>Check-in Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attendanceHistory">
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted" style="padding: 30px;">Loading...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== PROGRESS TAB ==================== -->
+            <div class="tab-content" id="tab-progress">
+
+                <!-- Progress Form -->
+                <div class="glass-card mb-3">
+                    <h3 style="margin-bottom: 16px;">📝 Log Today's Measurements</h3>
+                    <form id="progressForm">
+                        <div class="progress-form-grid">
+                            <div class="form-group">
+                                <label for="prWeight">Weight (kg)</label>
+                                <input type="number" step="0.1" id="prWeight" class="form-control"
+                                    placeholder="e.g. 70.5">
+                            </div>
+                            <div class="form-group">
+                                <label for="prChest">Chest (inch)</label>
+                                <input type="number" step="0.1" id="prChest" class="form-control" placeholder="e.g. 38">
+                            </div>
+                            <div class="form-group">
+                                <label for="prWaist">Waist (inch)</label>
+                                <input type="number" step="0.1" id="prWaist" class="form-control" placeholder="e.g. 32">
+                            </div>
+                            <div class="form-group">
+                                <label for="prBiceps">Biceps (inch)</label>
+                                <input type="number" step="0.1" id="prBiceps" class="form-control"
+                                    placeholder="e.g. 14">
+                            </div>
+                            <div class="form-group">
+                                <label for="prThighs">Thighs (inch)</label>
+                                <input type="number" step="0.1" id="prThighs" class="form-control"
+                                    placeholder="e.g. 22">
+                            </div>
+                            <div class="form-group">
+                                <label for="prShoulders">Shoulders (inch)</label>
+                                <input type="number" step="0.1" id="prShoulders" class="form-control"
+                                    placeholder="e.g. 44">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="prNotes">Notes</label>
+                            <input type="text" id="prNotes" class="form-control" placeholder="How was your workout?">
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="saveProgress()">💾 Save Progress</button>
+                    </form>
+                </div>
+
+                <!-- Progress Chart -->
+                <div class="progress-chart-container">
+                    <h3 style="margin-bottom: 16px;">📊 Weight Trend</h3>
+                    <div class="chart-placeholder">
+                        <div class="chart-bars" id="weightChart">
+                            <div class="empty-state">
+                                <p>Log your progress to see the chart</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress History -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3>📋 Progress History</h3>
+                    </div>
+                    <div class="table-responsive" style="overflow-x: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Weight</th>
+                                    <th>Chest</th>
+                                    <th>Waist</th>
+                                    <th>Biceps</th>
+                                    <th>Thighs</th>
+                                    <th>Shoulders</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody id="progressHistory">
+                                <tr>
+                                    <td colspan="8" class="text-center text-muted" style="padding: 30px;">Loading...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="/js/auth.js"></script>
+    <script src="/js/user.js"></script>
+</body>
+
+</html>

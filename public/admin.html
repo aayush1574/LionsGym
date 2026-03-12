@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | The Royal Fitness Gym</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <div class="logo-icon">👑</div>
+            <span>ROYAL <span class="gold">ADMIN</span></span>
+        </div>
+        <div class="nav-links">
+            <button class="tab-nav active" data-tab="dashboard" id="navDashboard">📊 <span>Dashboard</span></button>
+            <button class="tab-nav" data-tab="members" id="navMembers">👥 <span>Members</span></button>
+            <button class="tab-nav" data-tab="memberships" id="navMemberships">💳 <span>Memberships</span></button>
+            <button class="tab-nav" data-tab="personal" id="navPersonal">🎯 <span>Personal Training</span></button>
+            <button onclick="logout()" style="color: var(--danger);">🚪 <span>Logout</span></button>
+        </div>
+    </nav>
+
+    <div class="dashboard">
+        <div class="dashboard-content">
+
+            <!-- Dashboard Header -->
+            <div class="dashboard-header">
+                <h1>Welcome, <span class="text-gold" id="adminName">Admin</span> 👋</h1>
+                <p>Manage your gym members and memberships</p>
+            </div>
+
+            <!-- ==================== DASHBOARD TAB ==================== -->
+            <div class="tab-content active" id="tab-dashboard">
+                <div class="stats-grid" id="statsGrid">
+                    <div class="stat-card" style="cursor:pointer;" onclick="filterByCard('total')">
+                        <div class="stat-icon" style="background: rgba(245,158,11,0.15); color: var(--accent);">👥</div>
+                        <div class="stat-value" id="statTotalMembers">0</div>
+                        <div class="stat-label">Total Members</div>
+                    </div>
+                    <div class="stat-card" style="cursor:pointer;" onclick="filterByCard('active')">
+                        <div class="stat-icon" style="background: rgba(16,185,129,0.15); color: var(--success);">✅</div>
+                        <div class="stat-value" id="statActiveMembers">0</div>
+                        <div class="stat-label">Active Members</div>
+                    </div>
+                    <div class="stat-card" style="cursor:pointer;" onclick="filterByCard('pending')">
+                        <div class="stat-icon" style="background: rgba(239,68,68,0.15); color: var(--danger);">⏳</div>
+                        <div class="stat-value" id="statPending">0</div>
+                        <div class="stat-label">Pending Payments</div>
+                    </div>
+                    <div class="stat-card" style="cursor:pointer;" onclick="filterByCard('today')">
+                        <div class="stat-icon" style="background: rgba(59,130,246,0.15); color: var(--info);">📅</div>
+                        <div class="stat-value" id="statToday">0</div>
+                        <div class="stat-label">Today's Attendance</div>
+                    </div>
+                    <div class="stat-card" style="cursor:pointer;" onclick="filterByCard('expiring')">
+                        <div class="stat-icon" style="background: rgba(245,158,11,0.15); color: var(--warning);">⚠️
+                        </div>
+                        <div class="stat-value" id="statExpiring">0</div>
+                        <div class="stat-label">Expiring This Week</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(16,185,129,0.15); color: var(--success);">💰
+                        </div>
+                        <div class="stat-value" id="statRevenue">₹0</div>
+                        <div class="stat-label">Total Revenue</div>
+                    </div>
+                </div>
+
+                <!-- Filtered Members List (shown on stat card click) -->
+                <div id="filteredSection" style="display: none; margin-top: 10px;">
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3 id="filteredTitle">📋 Members</h3>
+                            <button class="btn btn-secondary btn-sm" onclick="closeFilteredSection()">✕ Close</button>
+                        </div>
+                        <div class="table-responsive" style="overflow-x: auto;">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Plan</th>
+                                        <th>Expiry</th>
+                                        <th>Payment</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="filteredTable">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== MEMBERS TAB ==================== -->
+            <div class="tab-content" id="tab-members">
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3>👥 All Members</h3>
+                        <div class="flex gap-2">
+                            <div class="search-box">
+                                <span class="search-icon">🔍</span>
+                                <input type="text" class="form-control" placeholder="Search members..."
+                                    id="searchMembers" style="padding-left: 40px;">
+                            </div>
+                            <button class="btn btn-primary btn-sm" onclick="openAddMemberModal()">+ Add Member</button>
+                        </div>
+                    </div>
+                    <div class="table-responsive" style="overflow-x: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Plan</th>
+                                    <th>Expiry</th>
+                                    <th>Payment</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="membersTable">
+                                <tr>
+                                    <td colspan="7" class="text-center text-muted" style="padding: 40px;">Loading...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== MEMBERSHIPS TAB ==================== -->
+            <div class="tab-content" id="tab-memberships">
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3>💳 All Memberships</h3>
+                        <div class="flex gap-2">
+                            <div class="search-box">
+                                <span class="search-icon">🔍</span>
+                                <input type="text" class="form-control" placeholder="Search memberships..."
+                                    id="searchMemberships" style="padding-left: 40px;">
+                            </div>
+                            <button class="btn btn-primary btn-sm" onclick="openNewMembershipModal()">+ New
+                                Membership</button>
+                        </div>
+                    </div>
+                    <div class="table-responsive" style="overflow-x: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Member</th>
+                                    <th>Plan</th>
+                                    <th>Duration</th>
+                                    <th>Start</th>
+                                    <th>End</th>
+                                    <th>Amount</th>
+                                    <th>Payment</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="membershipsTable">
+                                <tr>
+                                    <td colspan="8" class="text-center text-muted" style="padding: 40px;">Loading...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== PERSONAL TRAINING TAB ==================== -->
+            <div class="tab-content" id="tab-personal">
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3>🎯 Personal Training Members</h3>
+                        <div class="flex gap-2">
+                            <div class="search-box">
+                                <span class="search-icon">🔍</span>
+                                <input type="text" class="form-control" placeholder="Search PT members..." id="searchPT"
+                                    style="padding-left: 40px;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive" style="overflow-x: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Duration</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Amount</th>
+                                    <th>Payment</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ptTable">
+                                <tr>
+                                    <td colspan="9" class="text-center text-muted" style="padding: 40px;">Loading...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ==================== ADD MEMBER MODAL ==================== -->
+    <div class="modal-overlay" id="addMemberModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="memberModalTitle">➕ Add New Member</h3>
+                <button class="modal-close" onclick="closeModal('addMemberModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="memberForm">
+                    <input type="hidden" id="editMemberId">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="memberName">Full Name</label>
+                            <input type="text" id="memberName" class="form-control" placeholder="John Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="memberGender">Gender</label>
+                            <select id="memberGender" class="form-control">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="memberEmail">Email</label>
+                        <input type="email" id="memberEmail" class="form-control" placeholder="john@example.com"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="memberPhone">Phone</label>
+                        <input type="tel" id="memberPhone" class="form-control" placeholder="9876543210" required>
+                    </div>
+                    <div class="form-group" id="passwordGroup">
+                        <label for="memberPassword">Password</label>
+                        <input type="password" id="memberPassword" class="form-control" placeholder="Set login password"
+                            required>
+                    </div>
+
+                    <!-- Personal Training Toggle (Add mode only) -->
+                    <div id="ptToggleGroup">
+                        <hr style="border-color: var(--border-color); margin: 16px 0;">
+                        <label
+                            style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-weight: 600; color: var(--accent);">
+                            <input type="checkbox" id="ptToggle" onchange="togglePTFields()"
+                                style="width:18px; height:18px; accent-color: var(--accent);">
+                            🎯 Assign Personal Training (Professional Plan)
+                        </label>
+                        <div id="ptFields" style="display: none; margin-top: 12px;">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="ptDuration">Duration</label>
+                                    <select id="ptDuration" class="form-control" onchange="updatePTPrice()">
+                                        <option value="1_month">1 Month</option>
+                                        <option value="3_month">3 Months</option>
+                                        <option value="6_month">6 Months</option>
+                                        <option value="1_year">1 Year</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ptStartDate">Start Date</label>
+                                    <input type="date" id="ptStartDate" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="ptAmount">Amount (₹)</label>
+                                    <input type="number" id="ptAmount" class="form-control" value="2000">
+                                </div>
+                                <div class="form-group">
+                                    <label for="ptPayment">Payment Status</label>
+                                    <select id="ptPayment" class="form-control">
+                                        <option value="paid">✅ Paid</option>
+                                        <option value="pending">⏳ Pending</option>
+                                        <option value="partial">🔶 Partial</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="membershipDatesGroup" style="display: none;">
+                        <hr style="border-color: var(--border-color); margin: 16px 0;">
+                        <p style="font-size: 0.85rem; color: var(--accent); font-weight: 600; margin-bottom: 12px;">📅
+                            Membership Dates</p>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="memberStartDate">Start Date</label>
+                                <input type="date" id="memberStartDate" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="memberEndDate">End Date</label>
+                                <input type="date" id="memberEndDate" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('addMemberModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveMember()" id="saveMemberBtn">Save Member</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== NEW MEMBERSHIP MODAL ==================== -->
+    <div class="modal-overlay" id="newMembershipModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>💳 Create Membership</h3>
+                <button class="modal-close" onclick="closeModal('newMembershipModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="membershipForm">
+                    <div class="form-group">
+                        <label for="msUserId">Select Member</label>
+                        <select id="msUserId" class="form-control" required>
+                            <option value="">-- Select Member --</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="msPlan">Plan Type</label>
+                            <select id="msPlan" class="form-control" required onchange="updatePrice()">
+                                <option value="gold">🥇 Gold</option>
+                                <option value="professional">💎 Professional</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="msDuration">Duration</label>
+                            <select id="msDuration" class="form-control" required onchange="updatePrice()">
+                                <option value="1_month">1 Month</option>
+                                <option value="3_month">3 Months</option>
+                                <option value="6_month">6 Months</option>
+                                <option value="1_year">1 Year</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="msStartDate">Start Date</label>
+                            <input type="date" id="msStartDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="msAmount">Amount (₹)</label>
+                            <input type="number" id="msAmount" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="msPayment">Payment Status</label>
+                        <select id="msPayment" class="form-control">
+                            <option value="paid">✅ Paid</option>
+                            <option value="pending">⏳ Pending</option>
+                            <option value="partial">🔶 Partial</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('newMembershipModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveMembership()">Create Membership</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== PAYMENT UPDATE MODAL ==================== -->
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>💰 Update Payment</h3>
+                <button class="modal-close" onclick="closeModal('paymentModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="paymentMembershipId">
+                <div class="form-group">
+                    <label for="paymentStatus">Payment Status</label>
+                    <select id="paymentStatus" class="form-control">
+                        <option value="paid">✅ Paid</option>
+                        <option value="pending">⏳ Pending</option>
+                        <option value="partial">🔶 Partial</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="paymentEndDate">End Date (optional update)</label>
+                    <input type="date" id="paymentEndDate" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('paymentModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="updatePayment()">Update</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="/js/auth.js"></script>
+    <script src="/js/admin.js"></script>
+</body>
+
+</html>

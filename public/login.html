@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Login to The Royal Fitness Gym member portal">
+    <title>Login | The Royal Fitness Gym</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <div class="login-page">
+        <div class="login-card glass-card">
+            <div class="login-header">
+                <div class="logo-lg">👑 THE <span class="text-gold">ROYAL</span> FITNESS</div>
+                <p>Sign in to your account</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" class="form-control" placeholder="Enter your email" required
+                        autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="Enter your password" required
+                        autocomplete="current-password">
+                </div>
+                <div id="loginError" class="hidden"
+                    style="padding: 10px 16px; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: var(--radius-sm); color: var(--danger); font-size: 0.85rem; margin-bottom: 16px;">
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;" id="loginBtn">
+                    🔐 Sign In
+                </button>
+            </form>
+
+            <div style="text-align: center; margin-top: 24px;">
+                <a href="/" style="font-size: 0.85rem; color: var(--text-muted);">← Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="/js/auth.js"></script>
+</body>
+
+</html>

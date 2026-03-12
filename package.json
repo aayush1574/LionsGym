@@ -1,0 +1,19 @@
+{
+  "name": "royal-fitness-gym",
+  "version": "1.0.0",
+  "description": "The Royal Fitness Gym Management Website",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "sql.js": "^1.10.2",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "node-cron": "^3.0.3",
+    "dotenv": "^16.3.1",
+    "axios": "^1.6.5"
+  }
+}
