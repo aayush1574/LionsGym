@@ -43,7 +43,7 @@ async function start() {
     });
 
     app.listen(PORT, () => {
-        console.log(`\n🏋️  The Royal Fitness Gym Server`);
+        console.log(`\n🏋️  Lion's Gym Server`);
         console.log(`🌐 Running at http://localhost:${PORT}`);
         console.log(`📅 WhatsApp cron job scheduled (daily at 9:00 AM)\n`);
     });

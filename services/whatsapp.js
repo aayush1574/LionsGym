@@ -23,7 +23,7 @@ async function sendWhatsAppMessage(phone, name, expiryDate) {
                 to: formattedPhone,
                 type: 'text',
                 text: {
-                    body: `🏋️ The Royal Fitness Gym\n\nHi ${name}! Your gym membership is expiring on ${expiryDate}.\n\nPlease visit the gym or contact us to renew your membership.\n\n📞 9981219521 / 8770584692\n📍 Royal City, Near Kushum Devi Garden, Jail Road Vidisha`
+                    body: `🏋️ Lion's Gym\n\nHi ${name}! Your gym membership is expiring on ${expiryDate}.\n\nPlease visit the gym or contact us to renew your membership.\n\n📞 9981219521 / 8770584692 (Placeholder)\n📍 Nakshe Wala, Dipo Road Near Maa Vihar Colony, Infront Of Jain Mandir, Durga Nagar, Vidisha-464001`
                 }
             },
             {

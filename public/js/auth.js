@@ -5,22 +5,22 @@
 const API_BASE = '/api';
 
 function getToken() {
-    return localStorage.getItem('royal_gym_token');
+    return localStorage.getItem('lions_gym_token');
 }
 
 function getUser() {
-    const user = localStorage.getItem('royal_gym_user');
+    const user = localStorage.getItem('lions_gym_user');
     return user ? JSON.parse(user) : null;
 }
 
 function setAuth(token, user) {
-    localStorage.setItem('royal_gym_token', token);
-    localStorage.setItem('royal_gym_user', JSON.stringify(user));
+    localStorage.setItem('lions_gym_token', token);
+    localStorage.setItem('lions_gym_user', JSON.stringify(user));
 }
 
 function clearAuth() {
-    localStorage.removeItem('royal_gym_token');
-    localStorage.removeItem('royal_gym_user');
+    localStorage.removeItem('lions_gym_token');
+    localStorage.removeItem('lions_gym_user');
 }
 
 function logout() {

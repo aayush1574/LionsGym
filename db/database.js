@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 
-const dbPath = path.join(__dirname, '..', 'royalgym.db');
+const dbPath = path.join(__dirname, '..', 'lionsgym.db');
 
 let db;
 
@@ -78,14 +78,14 @@ async function initializeDatabase() {
   `);
 
   // Seed default admin if not exists
-  const adminCheck = db.exec("SELECT id FROM users WHERE email = 'admin@royalgym.com'");
+  const adminCheck = db.exec("SELECT id FROM users WHERE email = 'admin@lionsgym.com'");
   if (adminCheck.length === 0 || adminCheck[0].values.length === 0) {
     const hash = bcrypt.hashSync('admin123', 10);
     db.run(
       "INSERT INTO users (name, email, phone, password_hash, role, gender) VALUES (?, ?, ?, ?, 'admin', 'male')",
-      ['Admin', 'admin@royalgym.com', '9981219521', hash]
+      ['Admin', 'admin@lionsgym.com', '9981219521', hash]
     );
-    console.log('✅ Default admin created: admin@royalgym.com / admin123');
+    console.log('✅ Default admin created: admin@lionsgym.com / admin123');
   }
 
   saveDb();

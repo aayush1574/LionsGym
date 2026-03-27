@@ -39,7 +39,7 @@ async function loadProfile() {
             const durationLabel = membership.duration.replace('_', ' ').toUpperCase();
 
             document.getElementById('planName').textContent = `${planLabel} — ${durationLabel}`;
-            document.getElementById('membershipTitle').textContent = `The Royal Fitness Gym`;
+            document.getElementById('membershipTitle').textContent = `Lion's Gym`;
             document.getElementById('msStart').textContent = formatDate(membership.start_date);
             document.getElementById('msEnd').textContent = formatDate(membership.end_date);
 

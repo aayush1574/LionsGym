@@ -1,7 +1,7 @@
 {
-  "name": "royal-fitness-gym",
+  "name": "lions-gym",
   "version": "1.0.0",
-  "description": "The Royal Fitness Gym Management Website",
+  "description": "Lion's Gym Management Website",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
