@@ -1216,6 +1216,14 @@ tbody tr:last-child td {
   color: var(--text-secondary);
 }
 
+.pricing-row .price-original {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-decoration: line-through;
+  margin-left: auto;
+  margin-right: 12px;
+}
+
 .pricing-row .price {
   color: var(--accent);
   font-weight: 700;

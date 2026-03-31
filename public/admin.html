@@ -194,8 +194,8 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Email</th>
                                     <th>Phone</th>
+                                    <th>Trainer</th>
                                     <th>Duration</th>
                                     <th>Start Date</th>
                                     <th>End Date</th>
@@ -267,6 +267,10 @@
                             🎯 Assign Personal Training (Professional Plan)
                         </label>
                         <div id="ptFields" style="display: none; margin-top: 12px;">
+                            <div class="form-group">
+                                <label for="ptTrainerName">Trainer Name</label>
+                                <input type="text" id="ptTrainerName" class="form-control" placeholder="e.g. Deepak Rajput" value="Deepak Rajput">
+                            </div>
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="ptDuration">Duration</label>
@@ -275,7 +279,12 @@
                                         <option value="3_month">3 Months</option>
                                         <option value="6_month">6 Months</option>
                                         <option value="1_year">1 Year</option>
+                                        <option value="custom">⚙️ Custom Months</option>
                                     </select>
+                                </div>
+                                <div class="form-group" id="ptCustomMonthsGroup" style="display:none;">
+                                    <label for="ptCustomMonths">No. of Months</label>
+                                    <input type="number" id="ptCustomMonths" class="form-control" min="1" max="24" placeholder="e.g. 2">
                                 </div>
                                 <div class="form-group">
                                     <label for="ptStartDate">Start Date</label>

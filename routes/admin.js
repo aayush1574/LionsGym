@@ -262,7 +262,15 @@ router.post('/memberships', (req, res) => {
             case '3_month': endDate = new Date(start.setMonth(start.getMonth() + 3)); break;
             case '6_month': endDate = new Date(start.setMonth(start.getMonth() + 6)); break;
             case '1_year': endDate = new Date(start.setFullYear(start.getFullYear() + 1)); break;
-            default: return res.status(400).json({ error: 'Invalid duration.' });
+            default:
+                // custom_N format e.g. custom_2 = 2 months
+                if (duration.startsWith('custom_')) {
+                    const months = parseInt(duration.split('_')[1]);
+                    if (!months || months < 1) return res.status(400).json({ error: 'Invalid custom duration.' });
+                    endDate = new Date(start.setMonth(start.getMonth() + months));
+                } else {
+                    return res.status(400).json({ error: 'Invalid duration.' });
+                }
         }
 
         const endDateStr = endDate.toISOString().split('T')[0];

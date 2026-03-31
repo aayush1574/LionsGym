@@ -137,7 +137,9 @@ function togglePTFields() {
 
 function updatePTPrice() {
     const duration = document.getElementById('ptDuration').value;
-    document.getElementById('ptAmount').value = PRICING.professional?.[duration] || 2000;
+    const customGroup = document.getElementById('ptCustomMonthsGroup');
+    customGroup.style.display = duration === 'custom' ? 'block' : 'none';
+    document.getElementById('ptAmount').value = PRICING.professional?.[duration] || 1500;
 }
 
 function editMember(id) {
@@ -207,10 +209,17 @@ async function saveMember() {
 
             // Auto-create professional membership if PT is checked
             if (document.getElementById('ptToggle').checked) {
+                let duration = document.getElementById('ptDuration').value;
+                if (duration === 'custom') {
+                    const months = document.getElementById('ptCustomMonths').value;
+                    if (!months || months < 1) { showToast('Enter valid custom months', 'error'); return; }
+                    duration = `custom_${months}`;
+                }
                 const ptBody = {
                     user_id: result.id,
                     plan_type: 'professional',
-                    duration: document.getElementById('ptDuration').value,
+                    duration,
+                    trainer_name: document.getElementById('ptTrainerName').value || 'Deepak Rajput',
                     start_date: document.getElementById('ptStartDate').value || new Date().toISOString().split('T')[0],
                     amount: parseFloat(document.getElementById('ptAmount').value),
                     payment_status: document.getElementById('ptPayment').value
@@ -454,7 +463,10 @@ function renderPTMembers(members) {
 
     tbody.innerHTML = members.map(m => {
         const days = m.end_date ? daysRemaining(m.end_date) : 0;
-        const durationLabel = m.duration ? m.duration.replace('_', ' ').replace('1 month', '1 Month').replace('3 month', '3 Months').replace('6 month', '6 Months').replace('1 year', '1 Year') : '—';
+        let durationLabel = m.duration || '—';
+        durationLabel = durationLabel.replace('1_month','1 Month').replace('3_month','3 Months').replace('6_month','6 Months').replace('1_year','1 Year');
+        if (durationLabel.startsWith('custom_')) durationLabel = durationLabel.replace('custom_','') + ' Months (Custom)';
+        const trainerName = m.trainer_name || 'Deepak Rajput';
         const statusBadge = days <= 0
             ? '<span class="badge badge-danger">Expired</span>'
             : days <= 7
@@ -463,9 +475,9 @@ function renderPTMembers(members) {
         const paymentBadge = `<span class="badge ${m.payment_status === 'paid' ? 'badge-success' : m.payment_status === 'partial' ? 'badge-warning' : 'badge-danger'}">${m.payment_status}</span>`;
 
         return `<tr>
-            <td><strong style="color: var(--text-primary);">${m.name}</strong></td>
-            <td>${m.email}</td>
+            <td><strong style="color: var(--text-primary);">${m.name}</strong><br><span class="text-muted" style="font-size:0.8rem;">${m.email}</span></td>
             <td>${m.phone}</td>
+            <td><span style="color:var(--accent);font-weight:600;">🏋️ ${trainerName}</span></td>
             <td>${durationLabel}</td>
             <td>${formatDate(m.start_date)}</td>
             <td>${formatDate(m.end_date)}</td>
